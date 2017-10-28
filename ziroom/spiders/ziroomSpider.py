@@ -19,7 +19,6 @@ class ZiroomSpider(scrapy.Spider):
     def parse(self, response):
         for house in response.css('li.clearfix'):
             room = ZiroomItem()
-            import pdb; pdb.set_trace()
             town, metro = house.css('h4 a::text').extract_first().split(' ')
             detail = house.css('div.detail p span').extract()
             floor = detail[1].css('text').extract_first()
