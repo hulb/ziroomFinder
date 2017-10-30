@@ -17,18 +17,23 @@ class ZiroomSpider(scrapy.Spider):
             yield scrapy.Request(url=url, callback=self.parse, headers=headers)
 
     def parse(self, response):
+    
         for house in response.css('li.clearfix'):
             room = ZiroomItem()
             town, metro = house.css('h4 a::text').extract_first().split(' ')
-            detail = house.css('div.detail p span').extract()
-            floor = detail[1].css('text').extract_first()
-
-            room['allfloor'] = floor.split('/')[1][0:3]
-            room['floor'] = floor.split('/')[0]
-            room['layout'] = detail[2].css('text').extract_first()
-            room['size'] = detail[0].css('text').extract_first()
+            detail = house.css('div.detail p span::text').extract()
+            floor = detail[1][:-1]
+            room['price'] = float(house.css('p.price::text').extract_first()[63:70].strip())
+            room['floor'], room['allfloor'] = floor.split('/') if '/' in floor else ('', '')
+            room['layout'] = detail[2]
+            room['size'] = detail[0]
             room['title'] = house.css('h3 a::text').extract_first()
             room['link'] = house.css('h3 a::attr(href)').extract_first()
             room['town'] = town[1:-1]
-            room['nearbymetroline'] = metro.split(u'\u53f7\u7ebf')[0] if metro else ''
-            room['nearbymetrostation'] = metro.split(u'\u53f7\u7ebf')[1] if metro else ''
+            room['nearbymetroline'], room['nearbymetrostation'] = metro.split(u'\u53f7\u7ebf') if metro else ('', '')
+            room['nearbymetrodistance'] = detail[-1].split(u'\u7ad9')[1] if u'\u7ad9' in detail[-1] else ''
+            for key, value in room.iteritems():
+                print value,
+            
+            print '\n'
+
