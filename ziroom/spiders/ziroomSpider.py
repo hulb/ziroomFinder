@@ -7,16 +7,18 @@ from ..items import ZiroomItem
 class ZiroomSpider(scrapy.Spider):
     name = 'ziroomFinder'
 
-
-    def start_requests(self):
-        headers = {
+    def __init__(self):
+        super(ZiroomSpider, self).__init__()
+        self.headers = headers = {
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
         }
+
+    def start_requests(self):
         urls = ['http://sh.ziroom.com/z/nl/z3-r1-x2-o4.html?']
         for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse, headers=headers)
+            yield scrapy.Request(url=url, callback=self.parseList, headers=self.headers)
 
-    def parse(self, response):
+    def parseList(self, response):
     
         for house in response.css('li.clearfix'):
             room = ZiroomItem()
@@ -28,12 +30,19 @@ class ZiroomSpider(scrapy.Spider):
             room['layout'] = detail[2]
             room['size'] = detail[0]
             room['title'] = house.css('h3 a::text').extract_first()
-            room['link'] = house.css('h3 a::attr(href)').extract_first()
+            room['link'] = 'http:' + house.css('h3 a::attr(href)').extract_first()
             room['town'] = town[1:-1]
             room['nearbymetroline'], room['nearbymetrostation'] = metro.split(u'\u53f7\u7ebf') if metro else ('', '')
             room['nearbymetrodistance'] = detail[-1].split(u'\u7ad9')[1] if u'\u7ad9' in detail[-1] else ''
-            for key, value in room.iteritems():
-                print value,
-            
-            print '\n'
+
+            yield scrapy.Request(url=room['link'], meta={'info': room}, headers=self.headers, callback=self.parseRoom)
+
+    def parseRoom(self, response):
+        roomInfo = response.meta['info']
+        lng = response.css('input#mapsearchText::attr(data-lng)').extract_first()
+        lat = response.css('input#mapsearchText::attr(data-lat)').extract_first()
+        roomInfo['lng'] = lng or ''
+        roomInfo['lat'] = lat or ''
+
+        yield roomInfo
 
