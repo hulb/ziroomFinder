@@ -14,6 +14,9 @@ BOT_NAME = 'ziroom'
 SPIDER_MODULES = ['ziroom.spiders']
 NEWSPIDER_MODULE = 'ziroom.spiders'
 
+MONGO_URI = ('127.0.0.1', 27017)
+MONGO_DB = 'ziroom'
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'ziroom (+http://www.yourdomain.com)'
@@ -64,9 +67,9 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'ziroom.pipelines.ZiroomPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'ziroom.pipelines.ZiroomPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

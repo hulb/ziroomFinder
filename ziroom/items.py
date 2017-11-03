@@ -22,5 +22,7 @@ class ZiroomItem(scrapy.Item):
     price = scrapy.Field()
     title = scrapy.Field()
     size = scrapy.Field()
+    lng = scrapy.Field()
+    lat = scrapy.Field()
 
 
