@@ -3,6 +3,8 @@
 import scrapy
 from scrapy.selector import HtmlXPathSelector
 from ..items import ZiroomItem
+from scrapy.linkextractors import LinkExtractor
+
 
 class ZiroomSpider(scrapy.Spider):
     name = 'ziroomFinder'
@@ -20,6 +22,11 @@ class ZiroomSpider(scrapy.Spider):
 
     def parseList(self, response):
     
+        # extractor other path link to crawl
+        extractor = LinkExtractor(allow=(r'//sh\.ziroom\.com/z/nl/z3-r1-x2-o4\.html\?p=\d'))
+        for link in extractor.extract_links(response):
+            yield scrapy.Request(url=link.url, headers=self.headers, callback=self.parseList)
+
         for house in response.css('li.clearfix'):
             room = ZiroomItem()
             town, metro = house.css('h4 a::text').extract_first().split(' ')
