@@ -16,14 +16,18 @@ class ZiroomSpider(scrapy.Spider):
         }
 
     def start_requests(self):
-        urls = ['http://sh.ziroom.com/z/nl/z3-r1-x2-o4.html?']
+        urls = [
+            'http://sh.ziroom.com/z/nl/z3-r1-o4.html',
+            'http://sh.ziroom.com/z/nl/z3-r2-o4.html'
+            ]
+
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parseList, headers=self.headers)
 
     def parseList(self, response):
     
         # extractor other path link to crawl
-        extractor = LinkExtractor(allow=(r'//sh\.ziroom\.com/z/nl/z3-r1-x2-o4\.html\?p=\d'))
+        extractor = LinkExtractor(allow=(r'//sh\.ziroom\.com/z/nl/z3-r1-o4\.html\?p=\d', r'//sh\.ziroom\.com/z/nl/z3-r2-o4\.html\?p=\d'))
         for link in extractor.extract_links(response):
             yield scrapy.Request(url=link.url, headers=self.headers, callback=self.parseList)
 
@@ -35,6 +39,7 @@ class ZiroomSpider(scrapy.Spider):
             room['price'] = float(house.css('p.price::text').extract_first()[63:70].strip())
             room['floor'], room['allfloor'] = floor.split('/') if '/' in floor else ('', '')
             room['layout'] = detail[2]
+            room['isBalcony'] = True if house.css('span.balcony::text').extract_first() else False
             room['size'] = detail[0]
             room['title'] = house.css('h3 a::text').extract_first()
             room['link'] = 'http:' + house.css('h3 a::attr(href)').extract_first()
