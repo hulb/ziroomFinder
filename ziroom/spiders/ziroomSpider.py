@@ -27,7 +27,7 @@ class ZiroomSpider(scrapy.Spider):
     def parseList(self, response):
     
         # extractor other path link to crawl
-        extractor = LinkExtractor(allow=(r'//sh\.ziroom\.com/z/nl/z3-r1-o4\.html\?p=\d', r'//sh\.ziroom\.com/z/nl/z3-r2-o4\.html\?p=\d'))
+        extractor = LinkExtractor(allow=(r'^http://sh\.ziroom\.com/z/nl/z3-r1-o4\.html\?p=\d', r'^http://sh\.ziroom\.com/z/nl/z3-r2-o4\.html\?p=\d'))
         for link in extractor.extract_links(response):
             yield scrapy.Request(url=link.url, headers=self.headers, callback=self.parseList)
 

@@ -6,6 +6,8 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import pymongo
+from scrapy.exceptions import IgnoreRequest
 
 
 class ZiroomSpiderMiddleware(object):
@@ -13,10 +15,26 @@ class ZiroomSpiderMiddleware(object):
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
 
+    def __init__(self, mongoURI, mongoDB):
+        super(ZiroomSpiderMiddleware, self).__init__()
+        self.mongoURI = mongoURI
+        self.mongoDB = mongoDB
+
+        self.connection = pymongo.MongoClient(*self.mongoURI)
+        self.tdb = self.connection[self.mongoDB]
+        self.rooms = self.tdb.rooms
+        self.crawledLinks = set()
+
+        for item in self.rooms.find():
+            self.crawledLinks.add(item['link'])
+
     @classmethod
     def from_crawler(cls, crawler):
         # This method is used by Scrapy to create your spiders.
-        s = cls()
+        s = cls(
+            mongoURI = crawler.settings.get('MONGO_URI'),
+            mongoDB = crawler.settings.get('MONGO_DB')
+        )
         crawler.signals.connect(s.spider_opened, signal=signals.spider_opened)
         return s
 
@@ -54,3 +72,7 @@ class ZiroomSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+    def process_request(self, request, spider):
+        if request.url in self.crawledLinks:
+            raise IgnoreRequest('Ignore Request: %s' % request.url)
