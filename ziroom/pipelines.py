@@ -5,6 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import pymongo
+from pymongo.errors import DuplicateKeyError
 from scrapy.exceptions import DropItem
 
 class ZiroomPipeline(object):
@@ -28,7 +29,12 @@ class ZiroomPipeline(object):
         if not item['lat'] or not item['lng']:
             raise DropItem("missing gps data")
 
-        self.rooms.insert_one(dict(item))
+        # use mongodb _id field to filter duplicated item
+        try:
+            self.rooms.insert_one(dict(item))
+        except DuplicateKeyError, error:
+            raise DropItem("item exists")
+
         return item
 
     def close_spider(self, spider):

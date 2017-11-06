@@ -38,6 +38,7 @@ class ZiroomSpider(scrapy.Spider):
             room['size'] = detail[0]
             room['title'] = house.css('h3 a::text').extract_first()
             room['link'] = 'http:' + house.css('h3 a::attr(href)').extract_first()
+            room['_id'] = room['link'].split('/')[-1][:-5]
             room['town'] = town[1:-1]
             room['nearbymetroline'], room['nearbymetrostation'] = metro.split(u'\u53f7\u7ebf') if metro else ('', '')
             room['nearbymetrodistance'] = detail[-1].split(u'\u7ad9')[1] if u'\u7ad9' in detail[-1] else ''

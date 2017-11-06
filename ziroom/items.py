@@ -24,5 +24,6 @@ class ZiroomItem(scrapy.Item):
     size = scrapy.Field()
     lng = scrapy.Field()
     lat = scrapy.Field()
+    _id = scrapy.Field()
 
 
