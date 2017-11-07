@@ -76,3 +76,5 @@ class ZiroomSpiderMiddleware(object):
     def process_request(self, request, spider):
         if request.url in self.crawledLinks:
             raise IgnoreRequest('Ignore Request: %s' % request.url)
+        else:
+            self.crawledLinks.add(request.url)

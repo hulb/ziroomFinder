@@ -47,13 +47,15 @@ class ZiroomSpider(scrapy.Spider):
             room['town'] = town[1:-1]
             room['nearbymetroline'], room['nearbymetrostation'] = metro.split(u'\u53f7\u7ebf') if metro else ('', '')
             room['nearbymetrodistance'] = detail[-1].split(u'\u7ad9')[1] if u'\u7ad9' in detail[-1] else ''
-
+            
             yield scrapy.Request(url=room['link'], meta={'info': room}, headers=self.headers, callback=self.parseRoom)
 
     def parseRoom(self, response):
         roomInfo = response.meta['info']
         lng = response.css('input#mapsearchText::attr(data-lng)').extract_first()
         lat = response.css('input#mapsearchText::attr(data-lat)').extract_first()
+        roomInfo['houseId'] = response.css('input#house_id::attr(value)').extract_first()
+        roomInfo['resblock_id'] = response.css('input#resblock_id::attr(value)').extract_first()
         roomInfo['lng'] = lng or ''
         roomInfo['lat'] = lat or ''
 

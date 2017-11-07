@@ -26,5 +26,7 @@ class ZiroomItem(scrapy.Item):
     lat = scrapy.Field()
     _id = scrapy.Field()
     isBalcony = scrapy.Field()
+    houseId = scrapy.Field()
+    resblock_id = scrapy.Field()
 
 
