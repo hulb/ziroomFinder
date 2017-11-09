@@ -1,0 +1,3 @@
+GET http://phoenix.ziroom.com/v7/room/detail.json?house_id=60051928&id=60317239&city_code=310000 HTTP/1.1
+Accept: application/json;version=2
+Content-Type: application/json

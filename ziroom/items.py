@@ -7,6 +7,12 @@
 
 import scrapy
 
+statusDict = {
+    'dzz': '待入住',
+    'zzz': '转租中',
+    'ycz': '已入住',
+    'tzpzz': '待入住',
+}
 
 class ZiroomItem(scrapy.Item):
     # define the fields for your item here like:
@@ -28,5 +34,11 @@ class ZiroomItem(scrapy.Item):
     isBalcony = scrapy.Field()
     houseId = scrapy.Field()
     resblock_id = scrapy.Field()
+
+
+class ZiroomKeeper(scrapy.Item):
+    phone = scrapy.Field()
+    _id = scrapy.Field()
+    name = scrapy.Field()
 
 
