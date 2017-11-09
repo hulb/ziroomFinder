@@ -12,6 +12,7 @@ statusDict = {
     'zzz': '转租中',
     'ycz': '已入住',
     'tzpzz': '待入住',
+    'yxd': '已预订'
 }
 
 class ZiroomItem(scrapy.Item):
