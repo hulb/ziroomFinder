@@ -7,39 +7,46 @@
 
 import scrapy
 
-statusDict = {
-    'dzz': '待入住',
-    'zzz': '转租中',
-    'ycz': '已入住',
-    'tzpzz': '待入住',
-    'yxd': '已预订'
-}
 
-class ZiroomItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
+class ZiRoom(scrapy.Item):
     link = scrapy.Field()
     floor = scrapy.Field()
-    allfloor = scrapy.Field()
-    town = scrapy.Field()
-    layout = scrapy.Field()
-    nearbymetroline = scrapy.Field()
-    nearbymetrostation = scrapy.Field()
-    nearbymetrodistance = scrapy.Field()
+    floor_total = scrapy.Field()
     price = scrapy.Field()
-    title = scrapy.Field()
     size = scrapy.Field()
-    lng = scrapy.Field()
-    lat = scrapy.Field()
     _id = scrapy.Field()
     isBalcony = scrapy.Field()
     houseId = scrapy.Field()
     resblock_id = scrapy.Field()
+    status = scrapy.Field()
+    bedroom = scrapy.Field()
+    parlor = scrapy.Field()
+    face = scrapy.Field()
+    will_unrent_date = scrapy.Field()
+    tags = scrapy.Field()
+    code = scrapy.Field()
+    city_code = scrapy.Field()
+    name = scrapy.Field()
 
 
-class ZiroomKeeper(scrapy.Item):
+class ZiRoomKeeper(scrapy.Item):
     phone = scrapy.Field()
     _id = scrapy.Field()
     name = scrapy.Field()
 
+
+class ZiRoomBlock(scrapy.Item):
+    _id = scrapy.Field()
+    name = scrapy.Field()
+    lng = scrapy.Field()
+    lat = scrapy.Field()
+    keeperId = scrapy.Field()
+    greening_ratio = scrapy.Field()
+
+class ZiRoomMate(scrapy.Item):
+    _id = scrapy.Field()
+    house_id = scrapy.Field()
+    roommateGender = scrapy.Field()
+    roommateHoroscope = scrapy.Field()
+    title = scrapy.Field()
 

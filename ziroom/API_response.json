@@ -1,0 +1,89 @@
+{
+    "status": "success",
+    "error_code": 0,
+    "error_message": "",
+    "data": {
+        "id": "60317239",
+        "house_id": "60051928",
+        "code": "SHZRGY081624626_03",
+        "house_code": "SHZRGY081624626",
+        "city_code": "310000",
+        "sign_end_date": "",
+        "status": "ycz",
+        "price": 1290,
+        "price_desc": "季付价",
+        "area": "9.2",
+        "face": "南",
+        "bedroom": 3,
+        "parlor": 1,
+        "floor": "12",
+        "floor_total": "13",
+        "district_code": "310117",
+        "district_name": "松江",
+        "bizcircle_code": "613000336",
+        "bizcircle_name": "泗泾",
+        "will_unrent_date": "2018-11-12",
+        "resblock": {
+            "id": "5011000001386",
+            "name": "新凯城玉兰苑",
+            "lng": 121.2440148,
+            "lat": 31.11585629,
+            "build_year": "未知",
+            "build_type": "未知",
+            "greening_ratio": "27%"
+        },
+        "space": [{
+                "type": "308600000001",
+                "area": "9.2",
+                "face": "南",
+                "photos_big": [
+                    "https://img.ziroom.com/pic/house_images/g2/M00/66/E8/ChAFfVmuwKGAWdKQABHZ8w7HQGI252.JPG_C_800_600_Q100.jpg",
+                    "https://img.ziroom.com/pic/house_images/g2/M00/67/F3/ChAFD1mwwOiAXfGVABHsxATB-hM357.JPG_C_800_600_Q100.jpg",
+                    "https://img.ziroom.com/pic/house_images/g2/M00/66/E8/ChAFfVmuwKaAGKAuABBd_w4OVmM524.JPG_C_800_600_Q100.jpg"
+                ],
+                "tags": [{
+                    "title": "独立阳台"
+                }],
+                "name": "03卧"}],
+        "roommates": [{
+                "id": "60317238",
+                "house_id": "60051928",
+                "code": "SHZRGY081624626_02",
+                "house_code": "SHZRGY081624626",
+                "title": "02卧",
+                "status": "zzz",
+                "price": 1160,
+                "price_text": "¥1160元/月",
+                "roommate_gender": "男",
+                "roommate_horoscope": "摩羯座",
+                "status_text": "转租中"
+            },
+            {
+                "id": "60317239",
+                "house_id": "60051928",
+                "code": "SHZRGY081624626_03",
+                "house_code": "SHZRGY081624626",
+                "title": "03卧",
+                "status": "ycz",
+                "price": 1290,
+                "price_text": "¥1290元/月",
+                "roommate_gender": "女",
+                "roommate_horoscope": "水瓶座",
+                "status_text": "已入住"
+            },
+            {
+                "id": "60317237",
+                "house_id": "60051928",
+                "code": "SHZRGY081624626_01",
+                "house_code": "SHZRGY081624626",
+                "title": "01卧",
+                "status": "ycz",
+                "price": 1460,
+                "price_text": "¥1460元/月",
+                "roommate_gender": "男",
+                "roommate_horoscope": "双子座",
+                "status_text": "已入住"
+            }
+        ]
+    }
+}

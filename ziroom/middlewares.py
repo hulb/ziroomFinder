@@ -23,10 +23,16 @@ class ZiroomSpiderMiddleware(object):
         self.connection = pymongo.MongoClient(*self.mongoURI)
         self.tdb = self.connection[self.mongoDB]
         self.rooms = self.tdb.rooms
-        self.crawledLinks = set()
+        self.blocks = self.tdb.blocks
+        self.keepers = self.tdb.keepers
+        self.existsRoomIds = set()
+        self.existsBlockIds = set()
 
-        for item in self.rooms.find():
-            self.crawledLinks.add(item['link'])
+        # for item in self.rooms.find({'_id': 1}):
+        #     self.existsRoomIds.add(item['_id'])
+
+        # for item in self.blocks.find({'keeperId': {'!=': ''}},{'_id': 1}):
+        #     self.existsBlockIds.add(item['_id'])
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -74,7 +80,18 @@ class ZiroomSpiderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
     def process_request(self, request, spider):
-        if request.url in self.crawledLinks:
-            raise IgnoreRequest('Ignore Request: %s' % request.url)
-        else:
-            self.crawledLinks.add(request.url)
+        requestMeta = request.meta
+        roomId = requestMeta.get('roomId', '')
+        keeperBlockId = requestMeta.get('keeperBlockId', '')
+        # skip = (roomId and roomId in self.existsRoomIds) or (keeperBlockId and keeperBlockId in self.existsBlockIds)
+
+        # if request.url.startswith('http://phoenix.ziroom.com'):
+        #     import pdb; pdb.set_trace()
+        # if skip:
+        #     raise IgnoreRequest('Ignore Request: %s' % request.url)
+        # else:
+        #     if roomId:
+        #         self.existsRoomIds.add(roomId)
+            
+        #     if keeperBlockId:
+        #         self.existsBlockIds.add(keeperBlockId)
