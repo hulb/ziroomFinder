@@ -33,25 +33,25 @@ class ZiroomPipeline(object):
         if isinstance(item, ZiRoom):
             # use mongodb _id field to filter duplicated item
             try:
-                self.rooms.insert_one(dict(item))
+                self.rooms.save(dict(item))
             except DuplicateKeyError, error:
                 raise DropItem("room exists")
 
         if isinstance(item, ZiRoomKeeper):
             try:
-                self.keepers.insert_one(dict(item))
+                self.keepers.save(dict(item))
             except DuplicateKeyError, error:
                 raise DropItem("keeper exists")
         
         if isinstance(item, ZiRoomBlock):
             try:
-                self.blocks.insert_one(dict(item))
+                self.blocks.save(dict(item))
             except DuplicateKeyError, error:
                 raise DropItem("block exists")
 
         if isinstance(item, ZiRoomMate):
             try:
-                self.roommates.insert_one(dict(item))
+                self.roommates.save(dict(item))
             except DuplicateKeyError, error:
                 raise DropItem("roommate exists")
 

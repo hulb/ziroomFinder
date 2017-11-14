@@ -49,7 +49,7 @@ class ZiroomSpider(scrapy.Spider):
             room['link'] = 'http:' + house.css('h3 a::attr(href)').extract_first()
             room['_id'] = room['link'].split('/')[-1][:-5]
 
-            yield scrapy.Request(url=room['link'], meta={'room': room, 'roomId': room['_id']}, headers=self.headers, callback=self.parseRoom)
+            yield scrapy.Request(url=room['link'], meta={'room': room}, headers=self.headers, callback=self.parseRoom)
 
     def parseRoom(self, response):
         roomInfo = response.meta.get('room', ZiRoom())
@@ -57,8 +57,8 @@ class ZiroomSpider(scrapy.Spider):
         roomInfo['resblock_id'] = response.css('input#resblock_id::attr(value)').extract_first()
         roomInfo['city_code'] = response.css('input#curCityCode::attr(value)').extract_first()
 
-        yield scrapy.Request(url='http://sh.ziroom.com/detail/steward?resblock_id=%s' % roomInfo['resblock_id'], meta={'keeperBlockId': roomInfo['resblock_id']}, headers=self.headers, callback=self.parseKeeper)
-        yield scrapy.Request(url='http://phoenix.ziroom.com/v7/room/detail.json?house_id=%s&id=%s&city_code=%s' % (roomInfo['houseId'], roomInfo['_id'], roomInfo['city_code']), meta={'room': roomInfo, 'roomId': roomInfo['_id']}, headers=self.API_headers, callback=self.parseRoomByAPI)
+        yield scrapy.Request(url='http://sh.ziroom.com/detail/steward?resblock_id=%s' % roomInfo['resblock_id'], headers=self.headers, callback=self.parseKeeper)
+        yield scrapy.Request(url='http://phoenix.ziroom.com/v7/room/detail.json?house_id=%s&id=%s&city_code=%s' % (roomInfo['houseId'], roomInfo['_id'], roomInfo['city_code']), meta={'room': roomInfo}, headers=self.API_headers, callback=self.parseRoomByAPI)
 
     def parseRoomByAPI(self, response):
         roomResponse = ujson.loads(response.body).get('data', {})
@@ -108,7 +108,7 @@ class ZiroomSpider(scrapy.Spider):
                 mateRoomInfo['houseId'] = roommate['house_id']
                 mateRoomInfo['_id'] = roommate['_id']
 
-                yield scrapy.Request(url='http://phoenix.ziroom.com/v7/room/detail.json?house_id=%s&id=%s&city_code=%s' % (roommate['house_id'], roommate['_id'], roomInfo['city_code']), meta={'room': roomInfo, 'roomId': roommate['_id']}, headers=self.API_headers, callback=self.parseRoomByAPI)
+                yield scrapy.Request(url='http://phoenix.ziroom.com/v7/room/detail.json?house_id=%s&id=%s&city_code=%s' % (roommate['house_id'], roommate['_id'], roomInfo['city_code']), meta={'room': roomInfo}, headers=self.API_headers, callback=self.parseRoomByAPI)
                 yield roommate
             
             yield roomInfo
