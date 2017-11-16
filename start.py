@@ -1,21 +1,27 @@
 # -*- coding: utf-8 -*-
 
 import multiprocessing
-import scrapy
 from scrapy.crawler import CrawlerProcess
-from ziroom.spiders.ziroomSpider import ZiroomSpider
+from scrapy.utils.project import get_project_settings
 import pymongo
 from ziroom.settings import MONGO_DB, MONGO_URI
 from apscheduler.schedulers.blocking import BlockingScheduler
 import requests
 
 def crawlWorker():
-    process = CrawlerProcess()
-    process.crawl(ZiroomSpider)
+    """
+    crawl new room
+    :return:
+    """
+    process = CrawlerProcess(get_project_settings())
+    process.crawl('ziroomFinder')
     process.start()
 
 def updateWorker():
-    import pdb; pdb.set_trace()
+    """
+    update room info
+    :return:
+    """
     statusDict = {
         'dzz': '待入住',
         'zzz': '转租中',
@@ -45,15 +51,15 @@ def updateWorker():
         rooms.save(room)
 
 
-
+# start 2 process, one for update room status , one for crawl new rooms
 def job1():
-    # start 2 process, one for update room status , one for crawl new rooms
     p = multiprocessing.Process(target=crawlWorker)
     p.start()
 
 def job2():
     p2 = multiprocessing.Process(target=updateWorker)
     p2.start()
+
 
 if __name__ == '__main__':
     schedule = BlockingScheduler()

@@ -14,7 +14,7 @@ BOT_NAME = 'ziroom'
 SPIDER_MODULES = ['ziroom.spiders']
 NEWSPIDER_MODULE = 'ziroom.spiders'
 
-MONGO_URI = ('mongo', 27017)
+MONGO_URI = ('localhost', 27017)
 MONGO_DB = 'ziroom'
 
 
@@ -23,6 +23,8 @@ MONGO_DB = 'ziroom'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
+LOG_FILE = 'ziroom.log'
+LOG_LEVEL = 'INFO'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
