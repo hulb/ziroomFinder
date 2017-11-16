@@ -14,7 +14,7 @@ BOT_NAME = 'ziroom'
 SPIDER_MODULES = ['ziroom.spiders']
 NEWSPIDER_MODULE = 'ziroom.spiders'
 
-MONGO_URI = ('127.0.0.1', 27017)
+MONGO_URI = ('mongo', 27017)
 MONGO_DB = 'ziroom'
 
 
