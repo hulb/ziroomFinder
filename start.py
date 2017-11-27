@@ -30,7 +30,7 @@ def workLocationCostWorker():
         if 'duration' in block:
             continue
         
-        if count == 2000：
+        if count == 2000:
             break
 
         response = requests.get(apiUri % (','.join([block['lng'], block['lat']), workLocation, apiKey), headers=headers)
