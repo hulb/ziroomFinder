@@ -33,7 +33,7 @@ def workLocationCostWorker():
         if count == 2000:
             break
 
-        response = requests.get(apiUri % (','.join([block['lng'], block['lat']), workLocation, apiKey), headers=headers)
+        response = requests.get(apiUri % ','.join([block['lng'], block['lat']], workLocation, apiKey), headers=headers)
         result = response.json()
 
         transits = result.get('route', {}).get('transits', [])
