@@ -112,6 +112,7 @@ class ZiroomSpider(scrapy.Spider):
                 yield roommate
             
             yield roomInfo
+            yield block
 
     def parseKeeper(self, response):
         keeperResponse = ujson.loads(response.body).get('data', {})
